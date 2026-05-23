@@ -69,16 +69,19 @@ const Product = mongoose.model('Product', ProductSchema);
 const Transaction = mongoose.model('Transaction', TransactionSchema);
 
 // ── Database Init ─────────────────────────────────────────────────────────────
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/kasir_db')
+mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000
+    })
     .then(async () => {
         console.log('💚 MongoDB Connected!');
         useMongoDB = true;
         await seedMongoUsers();
     })
-    .catch(() => {
-        console.log('⚠️  MongoDB offline — menggunakan JSON fallback.');
-        useMongoDB = false;
-        seedJSONUsers();
+    .catch((err) => {
+    console.log('❌ MongoDB Error:', err.message);
+    console.log('⚠️  MongoDB offline — menggunakan JSON fallback.');
+    useMongoDB = false;
+    seedJSONUsers();
     });
 
 async function seedMongoUsers() {
