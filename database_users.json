@@ -1,0 +1,49 @@
+[
+  {
+    "_id": "json-admin-id",
+    "username": "admin",
+    "password": "$2b$10$TH.e1aCsc9HkOX0Qwx/sx.5Q8Sjx2VstDN0Ecse2OovXFikk7k2Fe",
+    "role": "admin",
+    "isOnline": true,
+    "loginHistory": [
+      {
+        "time": "2026-05-23T10:32:55.121Z",
+        "ip": "::1"
+      },
+      {
+        "time": "2026-05-23T10:30:19.739Z",
+        "ip": "::1"
+      },
+      {
+        "time": "2026-05-23T10:03:36.945Z",
+        "ip": "::1"
+      },
+      {
+        "time": "2026-05-23T09:10:24.068Z",
+        "ip": "::1"
+      }
+    ]
+  },
+  {
+    "_id": "json-kasir-id",
+    "username": "kasir",
+    "password": "$2b$10$Y..Wh07VyjWHqyOgTAOiq.p/hmOlyNvEszIE.056CyWdHUH9a1U7q",
+    "role": "kasir",
+    "isOnline": false,
+    "loginHistory": [
+      {
+        "time": "2026-05-23T10:32:04.143Z",
+        "ip": "::1"
+      }
+    ]
+  },
+  {
+    "_id": "json-owner-id",
+    "username": "owner",
+    "role": "owner",
+    "password": "$2b$10$A3sgeO8p6BmR/VBXlNPr8usRHmaTHPQxTjk.bvjNo8RlXSJjYnCKq",
+    "isOnline": false,
+    "loginHistory": [],
+    "avatar": ""
+  }
+]

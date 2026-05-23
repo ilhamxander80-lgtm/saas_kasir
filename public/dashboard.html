@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark" data-color="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SaaS Kasir Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Toast Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Loading Screen -->
+<div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+        <div class="loading-logo">K</div>
+        <div class="loading-text">KASIRKU</div>
+        <div class="loading-bar-track"><div class="loading-bar"></div></div>
+    </div>
+</div>
+
+<div class="dashboard-wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-top">
+            <div class="brand">
+                <div class="brand-logo">K</div>
+                <div class="brand-name">KASIRKU</div>
+            </div>
+            <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebar()" title="F9: Collapse Sidebar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active" data-tab="pos-tab" data-title="Kasir POS Terminal" onclick="switchTab('pos-tab',this)" title="POS Kasir">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                <span class="nav-label">Kasir POS</span>
+            </a>
+            <a href="#" class="nav-item" data-tab="history-tab" data-title="Riwayat Transaksi" onclick="switchTab('history-tab',this)" title="Riwayat Transaksi">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                <span class="nav-label">Riwayat</span>
+            </a>
+            <a href="#" class="nav-item admin-only" id="navProductCrud" data-tab="product-tab" data-title="Kelola Produk" onclick="switchTab('product-tab',this)" title="Kelola Produk">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                <span class="nav-label">Produk</span>
+            </a>
+            <a href="#" class="nav-item" data-tab="analytics-tab" data-title="Analisis Penjualan" onclick="switchTab('analytics-tab',this)" title="Analisis">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span class="nav-label">Analisis</span>
+            </a>
+            <a href="#" class="nav-item owner-only" id="navLoginHistory" data-tab="users-tab" data-title="Manajemen Pengguna" onclick="switchTab('users-tab',this)" title="Pengguna">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span class="nav-label">Pengguna</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer (theme, color, sound) -->
+        <div class="sidebar-footer">
+            <!-- Color Themes -->
+            <div class="color-theme-picker">
+                <span class="nav-label" style="font-size:11px;color:var(--text-secondary);padding-left:4px;">Tema Warna</span>
+                <div class="color-swatches">
+                    <button class="swatch swatch-blue active" onclick="setColorTheme('blue')" title="Biru Indigo"></button>
+                    <button class="swatch swatch-purple" onclick="setColorTheme('purple')" title="Violet"></button>
+                    <button class="swatch swatch-green" onclick="setColorTheme('green')" title="Hijau Mint"></button>
+                </div>
+            </div>
+
+            <!-- Lofi Player -->
+            <div class="lofi-player">
+                <div class="lofi-icon">♪</div>
+                <div class="lofi-info nav-label">
+                    <div class="lofi-title">Lo-Fi Cafe</div>
+                    <div class="lofi-sub">Ambient Playlist</div>
+                </div>
+                <button class="lofi-btn" id="lofiBtn" onclick="toggleLofi()" title="Toggle Cafe Music">▶</button>
+            </div>
+            <audio id="lofiAudio" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+
+            <!-- Dark Mode + Logout -->
+            <button class="theme-toggle" onclick="toggleTheme()" title="F10: Mode Gelap/Terang">
+                <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <span class="nav-label" id="themeText">Mode Terang</span>
+            </button>
+            <button class="btn-logout" onclick="handleLogout()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span class="nav-label">Keluar</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h2 class="header-title" id="pageTitle">Kasir POS Terminal</h2>
+                <p class="header-subtitle" id="dateTimeString"></p>
+            </div>
+            <div class="header-right">
+                <!-- Weather Widget -->
+                <div class="weather-widget" id="weatherWidget">
+                    <span class="weather-icon">⛅</span>
+                    <div class="weather-info">
+                        <span class="weather-temp" id="weatherTemp">--°C</span>
+                        <span class="weather-desc" id="weatherDesc">Memuat...</span>
+                    </div>
+                </div>
+
+                <!-- Online Users Badge -->
+                <div class="online-badge">
+                    <span class="online-dot"></span>
+                    <span id="onlineCount">0</span> online
+                </div>
+
+                <!-- User Badge -->
+                <div class="user-badge" onclick="openModal('changePasswordModal')" style="cursor:pointer;" title="Klik untuk ganti password">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-info">
+                        <span class="username" id="headerUsername">Admin</span>
+                        <span class="user-role" id="headerUserRole">Admin</span>
+                    </div>
+                </div>
+
+                <!-- Keyboard Shortcut hint -->
+                <button class="btn-icon" onclick="openModal('shortcutModal')" title="Pintasan Keyboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h.01M12 14h.01M16 14h.01M6 14h.01"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+
+            <!-- ═══════════════ 1. POS TAB ═══════════════ -->
+            <div id="pos-tab" class="tab-panel active">
+                <div class="pos-layout">
+                    <!-- Catalog -->
+                    <div class="pos-catalog">
+                        <!-- Filters row -->
+                        <div class="catalog-filters">
+                            <div class="search-box">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="posSearchInput" placeholder="Cari produk / scan barcode..." oninput="filterCatalog()" onkeydown="handleBarcodeEnter(event)">
+                            </div>
+                            <select class="sort-select" id="posSortSelect" onchange="filterCatalog()">
+                                <option value="default">Urutkan: Default</option>
+                                <option value="price-asc">Harga Termurah</option>
+                                <option value="price-desc">Harga Termahal</option>
+                                <option value="name-asc">Nama A-Z</option>
+                                <option value="stock-asc">Stok Terendah</option>
+                            </select>
+                        </div>
+                        <!-- Category Tabs -->
+                        <div class="category-tabs" id="categoryTabs">
+                            <button class="cat-tab active" onclick="setCategoryFilter('Semua', this)">Semua</button>
+                            <button class="cat-tab" onclick="setCategoryFilter('Makanan', this)">🍜 Makanan</button>
+                            <button class="cat-tab" onclick="setCategoryFilter('Minuman', this)">🧋 Minuman</button>
+                            <button class="cat-tab" onclick="setCategoryFilter('Snack', this)">🍿 Snack</button>
+                        </div>
+                        <div class="products-grid" id="posProductsGrid"></div>
+                    </div>
+
+                    <!-- Cart -->
+                    <div class="pos-cart">
+                        <div class="cart-header">
+                            <h3>🛒 Keranjang</h3>
+                            <button class="btn-clear-cart" onclick="clearCart()">Kosongkan</button>
+                        </div>
+                        <div class="cart-items-list" id="cartItemsList">
+                            <div class="cart-empty">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                                <p>Pilih produk di katalog</p>
+                            </div>
+                        </div>
+                        <div class="cart-footer">
+                            <div class="price-row"><span>Subtotal</span><span id="cartSubtotal">Rp 0</span></div>
+                            <div class="price-row"><span>PPN 10%</span><span id="cartTax">Rp 0</span></div>
+                            <div class="price-row total-row"><span>TOTAL</span><span id="cartTotal">Rp 0</span></div>
+                            <button class="btn-checkout" id="btnCheckoutTrigger" onclick="openCheckoutModal()" disabled>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                Proses Pembayaran <kbd>Ctrl+S</kbd>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ 2. RIWAYAT TAB ═══════════════ -->
+            <div id="history-tab" class="tab-panel">
+                <div class="glass-card table-card">
+                    <div class="card-header">
+                        <h3>Riwayat Transaksi</h3>
+                        <div class="header-actions">
+                            <div class="search-box select-search">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="historySearchInput" placeholder="Cari invoice / kasir..." oninput="filterHistory()">
+                            </div>
+                            <select id="historyFilterPeriod" class="sort-select" onchange="filterHistory()">
+                                <option value="all">Semua Waktu</option>
+                                <option value="today">Hari Ini</option>
+                                <option value="week">Minggu Ini</option>
+                                <option value="month">Bulan Ini</option>
+                            </select>
+                            <button class="btn-info btn-sm" onclick="exportCSV()">📊 Export CSV</button>
+                            <button class="btn-secondary btn-sm admin-only" onclick="downloadBackup()">💾 Backup DB</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr>
+                                <th>No. Invoice</th>
+                                <th>Tanggal</th>
+                                <th>Kasir</th>
+                                <th>Metode</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Aksi</th>
+                            </tr></thead>
+                            <tbody id="historyTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ 3. PRODUK TAB ═══════════════ -->
+            <div id="product-tab" class="tab-panel">
+                <div class="crud-layout">
+                    <!-- Form -->
+                    <div class="glass-card">
+                        <h3 id="formTitle">Tambah Produk Baru</h3>
+                        <form id="productForm" onsubmit="handleProductSubmit(event)" style="margin-top:20px;">
+                            <input type="hidden" id="crudProductId">
+                            <div class="form-group">
+                                <label>Nama Produk *</label>
+                                <input type="text" id="crudProductName" placeholder="Contoh: Kopi Susu Aren" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Harga (Rp) *</label>
+                                    <input type="number" id="crudProductPrice" placeholder="15000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stok Awal</label>
+                                    <input type="number" id="crudProductStock" placeholder="50" value="50">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Kategori</label>
+                                    <select id="crudProductCategory">
+                                        <option value="Semua">Semua</option>
+                                        <option value="Makanan">Makanan</option>
+                                        <option value="Minuman">Minuman</option>
+                                        <option value="Snack">Snack</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Barcode</label>
+                                    <input type="text" id="crudProductBarcode" placeholder="Opsional (scan atau ketik)">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Foto Produk</label>
+                                <div class="upload-area" onclick="document.getElementById('crudProductImage').click()">
+                                    <input type="file" id="crudProductImage" accept="image/*" style="display:none;" onchange="previewSelectedImage(this)">
+                                    <div id="uploadPlaceholder">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                        <p>Klik untuk upload gambar</p>
+                                        <span>Maks. 5MB</span>
+                                    </div>
+                                    <img id="uploadPreview" src="" alt="Preview" style="display:none;">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="resetProductForm()">Batal</button>
+                                <button type="submit" class="btn-primary" id="btnSubmitProduct">Simpan Produk</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Product Table -->
+                    <div class="glass-card">
+                        <div class="card-header" style="padding:0 0 20px 0;">
+                            <h3>Daftar Produk</h3>
+                            <div class="search-box select-search">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="crudSearchInput" placeholder="Cari produk..." oninput="renderProductCRUDTable()">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr>
+                                    <th>Foto</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aksi</th>
+                                </tr></thead>
+                                <tbody id="crudTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ 4. ANALISIS TAB ═══════════════ -->
+            <div id="analytics-tab" class="tab-panel">
+                <!-- Revenue Cards Row -->
+                <div class="stats-grid" style="margin-bottom:24px;">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-revenue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                        <div class="stat-details"><h3 id="statToday">Rp 0</h3><p>Pendapatan Hari Ini</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-products"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+                        <div class="stat-details"><h3 id="statWeek">Rp 0</h3><p>Pendapatan Minggu Ini</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-transactions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
+                        <div class="stat-details"><h3 id="statMonth">Rp 0</h3><p>Pendapatan Bulan Ini</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 12px rgba(245,158,11,.25)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                        <div class="stat-details"><h3 id="statTxToday">0</h3><p>Transaksi Hari Ini</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 6px 12px rgba(16,185,129,.25)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                        <div class="stat-details"><h3 id="statTxSuccess">0</h3><p>Transaksi Lunas</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 6px 12px rgba(239,68,68,.25)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+                        <div class="stat-details"><h3 id="statProductsSold">0</h3><p>Produk Terjual Total</p></div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="analytics-grid">
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:16px;">📈 Grafik Pendapatan (7 Hari)</h3>
+                        <div style="height:260px;"><canvas id="revenueChart"></canvas></div>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:16px;">🍕 Distribusi Kategori</h3>
+                        <div style="height:260px;"><canvas id="categoryChart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Bottom Section: Top Products + Low Stock -->
+                <div class="analytics-grid" style="margin-top:24px;">
+                    <!-- Top 5 Products -->
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:16px;">🏆 Top 5 Produk Terlaris</h3>
+                        <div id="topProductsList" class="top-products-list"></div>
+                    </div>
+                    <!-- Low Stock Warning -->
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:16px;">⚠️ Stok Menipis</h3>
+                        <div id="lowStockList" class="low-stock-list"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Log -->
+                <div class="glass-card" style="margin-top:24px;">
+                    <h3 style="margin-bottom:16px;">🕐 Aktivitas Terbaru</h3>
+                    <div id="activityLogs" class="activity-log-list"></div>
+                </div>
+            </div>
+
+            <!-- ═══════════════ 5. USERS TAB (OWNER ONLY) ═══════════════ -->
+            <div id="users-tab" class="tab-panel">
+                <div class="analytics-grid">
+                    <!-- Login History -->
+                    <div class="glass-card table-card" style="padding:0;">
+                        <div class="card-header"><h3>📋 Riwayat Login</h3></div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th>User</th><th>Role</th><th>Waktu</th><th>IP</th></tr></thead>
+                                <tbody id="loginHistoryBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Online Users + Stats -->
+                    <div class="glass-card">
+                        <h3 style="margin-bottom:20px;">🌐 Status Sistem</h3>
+                        <div class="system-stats">
+                            <div class="sys-stat-row">
+                                <span class="online-dot" style="margin-right:8px;"></span>
+                                <span id="sysOnlineCount">0 pengguna online</span>
+                            </div>
+                            <div class="sys-stat-row">
+                                <span>🗄️ Database Mode:</span>
+                                <span id="sysDbMode" class="badge badge-info">JSON Fallback</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" class="modal">
+    <div class="modal-content glass-card">
+        <div class="modal-header">
+            <h2>💳 Konfirmasi Pembayaran</h2>
+            <button class="close-modal-btn" onclick="closeModal('checkoutModal')">&times;</button>
+        </div>
+        <div class="checkout-details-summary">
+            <span class="label">Total Tagihan</span>
+            <span class="value" id="checkoutTotalText">Rp 0</span>
+        </div>
+        <div class="payment-method-selector">
+            <p>Metode Pembayaran:</p>
+            <div class="method-cards">
+                <div class="method-card active" id="methodTunai" onclick="selectPaymentMethod('Tunai')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
+                    <span>Uang Tunai</span>
+                    <small>Alt+1</small>
+                </div>
+                <div class="method-card" id="methodQRIS" onclick="selectPaymentMethod('QRIS')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>QRIS / E-Wallet</span>
+                    <small>Alt+2</small>
+                </div>
+            </div>
+        </div>
+        <div id="paymentAreaTunai" class="payment-fields-area">
+            <div class="form-group">
+                <label>Jumlah Uang Diterima (Rp)</label>
+                <input type="number" id="cashAmountInput" class="input-lg" placeholder="Masukkan nominal uang" oninput="calculateChange()">
+            </div>
+            <div class="change-display">
+                <span>Uang Kembalian:</span>
+                <span id="cashChangeText" class="change-value negative">Rp 0</span>
+            </div>
+        </div>
+        <div id="paymentAreaQRIS" class="payment-fields-area" style="display:none;">
+            <div class="qris-display">
+                <div class="qris-qr-wrapper"><img id="qrisQrCode" src="" alt="QRIS"></div>
+                <div class="qris-timer">
+                    <p>Scan untuk membayar</p>
+                    <div class="countdown-badge">⏰ <span id="qrisCountdown">05:00</span></div>
+                </div>
+                <div class="qris-status-checking"><div class="spinner"></div><span>Menunggu verifikasi...</span></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal('checkoutModal')">Batal</button>
+            <button class="btn-primary" id="btnSubmitCheckout" onclick="processCheckout()" disabled>Selesaikan Transaksi</button>
+        </div>
+    </div>
+</div>
+
+<!-- RECEIPT MODAL -->
+<div id="receiptModal" class="modal">
+    <div class="modal-content receipt-modal-content glass-card">
+        <div class="modal-header">
+            <h2>🧾 Struk Belanja</h2>
+            <button class="close-modal-btn" onclick="closeModal('receiptModal')">&times;</button>
+        </div>
+        <div class="receipt-slip-container" id="receiptPrintArea">
+            <div class="receipt-slip">
+                <div class="receipt-slip-header">
+                    <h2>KASIRKU MART</h2>
+                    <p>Jl. Jenderal Sudirman No. 45</p>
+                    <p>Telp: (021) 555-0987</p>
+                </div>
+                <div class="receipt-slip-divider">--------------------------------</div>
+                <div class="receipt-slip-meta">
+                    <div>Tanggal: <span id="receiptDate"></span></div>
+                    <div>Invoice: <span id="receiptTxId"></span></div>
+                    <div>Kasir: <span id="receiptCashier"></span></div>
+                    <div>Bayar: <span id="receiptPayMethod"></span></div>
+                    <div>Status: <span id="receiptStatus"></span></div>
+                </div>
+                <div class="receipt-slip-divider">--------------------------------</div>
+                <div class="receipt-slip-items" id="receiptItems"></div>
+                <div class="receipt-slip-divider">--------------------------------</div>
+                <div class="receipt-slip-totals">
+                    <div class="total-row-item"><span>Subtotal</span><span id="receiptSubtotal"></span></div>
+                    <div class="total-row-item"><span>PPN 10%</span><span id="receiptTax"></span></div>
+                    <div class="total-row-item grand-total-row-item"><span>TOTAL</span><span id="receiptGrandTotal"></span></div>
+                    <div class="total-row-item" id="receiptCashPaidRow"><span>Bayar Tunai</span><span id="receiptCashPaid"></span></div>
+                    <div class="total-row-item" id="receiptChangeReturnedRow"><span>Kembalian</span><span id="receiptChangeReturned"></span></div>
+                </div>
+                <div class="receipt-slip-divider">--------------------------------</div>
+                <div class="receipt-slip-footer">
+                    <h3>TERIMA KASIH</h3>
+                    <p>Barang yang sudah dibeli tidak dapat dikembalikan</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer receipt-modal-footer">
+            <button class="btn-secondary" onclick="closeModal('receiptModal')">Tutup</button>
+            <button class="btn-info" onclick="downloadReceiptPDF()">⬇ Unduh PDF</button>
+            <button class="btn-primary" onclick="printReceipt()">🖨 Cetak Struk</button>
+        </div>
+    </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div id="changePasswordModal" class="modal">
+    <div class="modal-content glass-card" style="max-width:420px;">
+        <div class="modal-header">
+            <h2>🔑 Ganti Password</h2>
+            <button class="close-modal-btn" onclick="closeModal('changePasswordModal')">&times;</button>
+        </div>
+        <form onsubmit="handleChangePassword(event)" style="margin-top:10px;">
+            <div class="form-group">
+                <label>Password Lama</label>
+                <input type="password" id="oldPassword" required placeholder="Masukkan password lama">
+            </div>
+            <div class="form-group">
+                <label>Password Baru</label>
+                <input type="password" id="newPassword" required placeholder="Minimal 3 karakter">
+            </div>
+            <div class="form-group">
+                <label>Konfirmasi Password Baru</label>
+                <input type="password" id="confirmPassword" required placeholder="Ketik ulang password baru">
+            </div>
+            <div class="modal-footer" style="margin-top:20px;">
+                <button type="button" class="btn-secondary" onclick="closeModal('changePasswordModal')">Batal</button>
+                <button type="submit" class="btn-primary">Simpan Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KEYBOARD SHORTCUTS MODAL -->
+<div id="shortcutModal" class="modal">
+    <div class="modal-content glass-card" style="max-width:480px;">
+        <div class="modal-header">
+            <h2>⌨️ Pintasan Keyboard</h2>
+            <button class="close-modal-btn" onclick="closeModal('shortcutModal')">&times;</button>
+        </div>
+        <div class="shortcut-list">
+            <div class="shortcut-row"><kbd>Ctrl + S</kbd><span>Buka dialog pembayaran (Checkout)</span></div>
+            <div class="shortcut-row"><kbd>Ctrl + P</kbd><span>Cetak struk terakhir</span></div>
+            <div class="shortcut-row"><kbd>Alt + 1</kbd><span>Pilih metode Tunai</span></div>
+            <div class="shortcut-row"><kbd>Alt + 2</kbd><span>Pilih metode QRIS</span></div>
+            <div class="shortcut-row"><kbd>F9</kbd><span>Buka/tutup sidebar</span></div>
+            <div class="shortcut-row"><kbd>F10</kbd><span>Ganti mode gelap/terang</span></div>
+            <div class="shortcut-row"><kbd>Esc</kbd><span>Tutup modal / dialog</span></div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

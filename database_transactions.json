@@ -1,0 +1,190 @@
+[
+  {
+    "_id": "json-tx-1779524380229nejo",
+    "items": [
+      {
+        "name": "bakso mak iah",
+        "price": 15000,
+        "quantity": 1
+      }
+    ],
+    "total": 16500,
+    "paymentMethod": "QRIS",
+    "cashier": "admin",
+    "date": "2026-05-23T08:19:40.229Z"
+  },
+  {
+    "_id": "json-tx-17795244126887ku8",
+    "items": [
+      {
+        "name": "bakso mak iah",
+        "price": 15000,
+        "quantity": 2
+      }
+    ],
+    "total": 33000,
+    "paymentMethod": "Tunai",
+    "cashier": "admin",
+    "date": "2026-05-23T08:20:12.688Z"
+  },
+  {
+    "_id": "json-tx-1779525814683p3kp",
+    "items": [
+      {
+        "name": "bakso mak iah",
+        "price": 15000,
+        "quantity": 1
+      }
+    ],
+    "total": 16500,
+    "paymentMethod": "QRIS",
+    "cashier": "kasir",
+    "date": "2026-05-23T08:43:34.683Z"
+  },
+  {
+    "_id": "json-tx-17795275291723hb3",
+    "date": "2026-05-23T09:12:09.172Z",
+    "items": [
+      {
+        "name": "donat kentang",
+        "price": 7000,
+        "quantity": 2
+      }
+    ],
+    "total": 15400,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 15400,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-1779527680085oyr0",
+    "date": "2026-05-23T09:14:40.085Z",
+    "items": [
+      {
+        "name": "es nyoklat",
+        "price": 10000,
+        "quantity": 2
+      }
+    ],
+    "total": 22000,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 22000,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-1779527700999ldqv",
+    "date": "2026-05-23T09:15:00.999Z",
+    "items": [
+      {
+        "name": "donat kentang",
+        "price": 7000,
+        "quantity": 1
+      }
+    ],
+    "total": 7700,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 7700,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-17795316708102gml",
+    "date": "2026-05-23T10:21:10.810Z",
+    "items": [
+      {
+        "name": "es nyoklat",
+        "price": 10000,
+        "quantity": 1
+      },
+      {
+        "name": "donat kentang",
+        "price": 7000,
+        "quantity": 1
+      },
+      {
+        "name": "bakso mak iah",
+        "price": 15000,
+        "quantity": 1
+      }
+    ],
+    "total": 35200,
+    "paymentMethod": "Tunai",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 90000,
+    "changeReturned": 54800
+  },
+  {
+    "_id": "json-tx-17795322420651fev",
+    "date": "2026-05-23T10:30:42.065Z",
+    "items": [
+      {
+        "name": "bakso mak iah",
+        "price": 15000,
+        "quantity": 2
+      }
+    ],
+    "total": 33000,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 33000,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-1779533476951qgld",
+    "date": "2026-05-23T10:51:16.951Z",
+    "items": [
+      {
+        "name": "es nyoklat",
+        "price": 10000,
+        "quantity": 1
+      }
+    ],
+    "total": 11000,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 11000,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-1779533518880na18",
+    "date": "2026-05-23T10:51:58.881Z",
+    "items": [
+      {
+        "name": "es nyoklat",
+        "price": 10000,
+        "quantity": 1
+      }
+    ],
+    "total": 11000,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 11000,
+    "changeReturned": 0
+  },
+  {
+    "_id": "json-tx-1779533543800hfs1",
+    "date": "2026-05-23T10:52:23.800Z",
+    "items": [
+      {
+        "name": "es nyoklat",
+        "price": 10000,
+        "quantity": 1
+      }
+    ],
+    "total": 11000,
+    "paymentMethod": "QRIS",
+    "status": "Lunas",
+    "cashier": "admin",
+    "cashPaid": 11000,
+    "changeReturned": 0
+  }
+]

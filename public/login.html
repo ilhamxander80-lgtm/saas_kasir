@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SaaS Kasir Online</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom Styling for Login Page to give it a gorgeous landing feel */
+        body.login-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
+            background: 
+                radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(99,102,241,0.15), transparent 35%),
+                linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1e1b4b 100%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            background: rgba(17, 24, 39, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1, transparent 40%);
+            z-index: -1;
+            border-radius: 26px;
+            opacity: 0.3;
+        }
+
+        .login-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .login-subtitle {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 36px;
+            font-weight: 400;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #d1d5db;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-wrapper input:focus {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .notification {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            display: none;
+            text-align: left;
+            animation: fadeIn 0.4s ease;
+            line-height: 1.4;
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.success {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-credentials {
+            margin-top: 32px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            text-align: left;
+        }
+
+        .demo-credentials p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0 0 8px 0;
+            font-weight: 500;
+        }
+
+        .credential-tag {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 4px 8px;
+            margin-right: 4px;
+            display: inline-block;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .credential-tag:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Decorative glowing circles */
+        .circle-blur {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .circle-1 {
+            top: 15%;
+            left: 20%;
+            background: #4f46e5;
+        }
+        .circle-2 {
+            bottom: 15%;
+            right: 20%;
+            background: #3b82f6;
+        }
+    </style>
+</head>
+<body class="login-body">
+
+    <div class="circle-blur circle-1"></div>
+    <div class="circle-blur circle-2"></div>
+
+    <div class="login-card">
+        <div class="login-logo">KASIRKU</div>
+        <div class="login-subtitle">Sistem Kasir Pintar & POS Online</div>
+
+        <!-- Alert Notification -->
+        <div id="alertNotification" class="notification"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <input type="text" id="username" placeholder="Masukkan username" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" placeholder="Masukkan password" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="submitBtn">Masuk ke Sistem</button>
+        </form>
+
+        <div class="demo-credentials">
+            <p>🔑 Akun Demo (Klik untuk isi cepat):</p>
+            <div style="margin-bottom: 8px;">
+                <span class="credential-tag" onclick="quickFill('admin', '123')">🔑 Admin (admin / 123)</span>
+            </div>
+            <div>
+                <span class="credential-tag" onclick="quickFill('kasir', '123')">👤 Kasir (kasir / 123)</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already logged in
+        const token = localStorage.getItem('cashier_token');
+        if (token) {
+            // Verify token
+            fetch('/api/auth/verify', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/dashboard.html';
+                } else {
+                    localStorage.removeItem('cashier_token');
+                    localStorage.removeItem('cashier_user');
+                }
+            })
+            .catch(() => {
+                // Network error, ignore redirect
+            });
+        }
+
+        function quickFill(user, pass) {
+            document.getElementById('username').value = user;
+            document.getElementById('password').value = pass;
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submitBtn');
+            const alertBox = document.getElementById('alertNotification');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!username || !password) {
+                showAlert('Harap isi semua kolom!', 'error');
+                return;
+            }
+
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Memproses...';
+            alertBox.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Login berhasil! Mengalihkan...', 'success');
+                    
+                    // Save JWT token and user info
+                    localStorage.setItem('cashier_token', data.token);
+                    localStorage.setItem('cashier_user', JSON.stringify(data.user));
+
+                    // Redirect to dashboard after 1 second
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1000);
+                } else {
+                    showAlert(data.message || 'Username atau password salah', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Masuk ke Sistem';
+                }
+            } catch (err) {
+                console.error(err);
+                showAlert('Gagal menghubungi server. Pastikan server berjalan!', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Masuk ke Sistem';
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertNotification');
+            alertBox.className = 'notification ' + type;
+            
+            let icon = '';
+            if (type === 'error') {
+                icon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+            } else {
+                icon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+            }
+
+            alertBox.innerHTML = icon + '<span>' + message + '</span>';
+            alertBox.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

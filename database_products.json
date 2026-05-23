@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "json-prod-1779524305881",
+    "name": "bakso mak iah",
+    "price": 15000,
+    "image": "/uploads/1779524305786-samosa print (3).png",
+    "stock": 47,
+    "category": "Makanan",
+    "barcode": ""
+  },
+  {
+    "_id": "json-prod-1779527499980",
+    "name": "donat kentang",
+    "price": 7000,
+    "stock": 46,
+    "category": "Snack",
+    "barcode": "",
+    "image": "/uploads/1779527499875-samosa print (7).png"
+  },
+  {
+    "_id": "json-prod-1779527641733",
+    "name": "es nyoklat",
+    "price": 10000,
+    "stock": 76,
+    "category": "Minuman",
+    "barcode": "",
+    "image": "/uploads/1779527641682-samosa print.png"
+  },
+  {
+    "_id": "json-prod-1779531642870",
+    "name": "baso aci",
+    "price": 5000,
+    "stock": 50,
+    "category": "Makanan",
+    "barcode": "",
+    "image": "/uploads/1779531642773-samosa print (5).png"
+  }
+]
