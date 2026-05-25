@@ -458,5 +458,7 @@ app.get('/api/database/backup', auth, adminOrOwner, async (req, res) => {
 // ── STATIC FALLBACKS ──────────────────────────────────────────────────────────
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/dashboard.html')));
-
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
 app.listen(PORT, () => console.log(`🚀 Server berjalan di http://localhost:${PORT}`));
