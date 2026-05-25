@@ -461,4 +461,8 @@ app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'public/da
 app.get('/', (req, res) => {
     res.redirect('/login');
 });
+
+console.log(__dirname);
+console.log(path.join(__dirname, 'public/login.html'));
+
 app.listen(PORT, () => console.log(`🚀 Server berjalan di http://localhost:${PORT}`));
